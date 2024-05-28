@@ -8,7 +8,7 @@
                 <v-card-text>
                     <v-text-field type="email"  name="email" v-model="formData.email" variant="outlined" label="Email" :error-messages="errors.get('email')" class="ma-2" />
                     <v-text-field type="password"  name="password" v-model="formData.password" variant="outlined" label="Password" :error-messages="errors.get('password')" class="ma-2" />
-                    <v-btn :loading="loadingKeys.includes('login')" round type="submit" color="primary" class="ma-2">Log in</v-btn>
+                    <v-btn :loading="loadingKeys.includes('logging-in')" round type="submit" color="primary" class="ma-2">Log in</v-btn>
                 </v-card-text>
             </v-card>
         </form>
@@ -27,13 +27,17 @@
 		},
         methods: {
             login() {
-                this.$store.dispatch('post', {
-                    name: 'login',
-                    url: 'auth/login',
-                    formData: this.formData,
-                }).then((res, rej) => {
-                    this.$router.push('/');
-                })
+                this.$store.dispatch('auth/login', this.formData)
+                // this.$store.dispatch('post', {
+                //     tag: 'login',
+                //     url: 'auth/login',
+                //     formData: this.formData,
+                // }).then((res, rej) => {
+                //     localStorage.setItem('sanctum_token', res.data.token.plainTextToken);
+                //     localStorage.setItem('token_name', res.data.token.accessToken.name);
+                //     // console.log("plain text token", res.data.token.plainTextToken);
+                //     this.$router.push('/');
+                // })
             },
             check() {
                 axios.get('api/auth/logout')

@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\UsesUuid;
+use Laravel\Sanctum\NewAccessToken;
+use Illuminate\Support\Str;
+
 
 class User extends Authenticatable
 {
@@ -43,4 +46,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function shops() {
+        return $this->belongsToMany(Shop::class);
+    }
+
+    public function createToken(string $name, array $abilities = ['*'], $expiresAt = null, string $userId = null) {
+        $plainTextToken = Str::random(64);
+        $token = $this->tokens()->create([
+            'name'      => $name,
+            'token'     => hash('sha256', $plainTextToken),
+            'abilities' => $abilities,
+            'user_id'   => $userId,
+            'expires_at' => $expiresAt,
+        ]);
+
+        return new NewAccessToken($token, $plainTextToken);
+    }
 }

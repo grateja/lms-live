@@ -4,36 +4,50 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function login(Request $request) {
-        sleep(1);
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return response()->json(['keme']);
-        } else {
+        $errors = [];
+
+        $user = User::where('email', $request->email)->first();
+        if($user == null) {
+            $errors = [
+                'email' => ['Email does not exists!']
+            ];
+        } else if(Hash::check($request->password, $user->password)) {
+            $token = $user->createToken('login', ['basic']);
+
             return response()->json([
-                'errors' => [
-                    'email' => [
-                        'Invalid login credentials'
-                    ]
-                ]
-            ], 401);
+                'token' => $token,
+                'user' => $user,
+            ]);
+        } else {
+            $errors = [
+                'password' => ['Wrong password']
+            ];
         }
+
+        return response()->json([
+            'errors' => $errors
+        ], 422);
     }
 
-    public function logout() {
-        Auth::guard('web')->logout();
+    public function logout(Request $request) {
+        $token = auth('sanctum')->user()->tokens()
+            ->where('name', $request->tokenName);
+        $token->delete();
     }
 
-    public function check(Request $request) {
-        return $request->user('sanctum');
+    public function check() {
+        return auth('sanctum')->user();
     }
 }

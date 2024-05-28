@@ -17,11 +17,11 @@ trait UsesUuid {
         });
     }
 
-    // public function getIncrementing() {
-    //     return false;
-    // }
+    public function getIncrementing() {
+        return false;
+    }
 
-    // public function getKeyType() {
-    //     return 'string';
-    // }
+    public function getKeyType() {
+        return 'string';
+    }
 }

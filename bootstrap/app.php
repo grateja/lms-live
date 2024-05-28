@@ -1,5 +1,8 @@
 <?php
 
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

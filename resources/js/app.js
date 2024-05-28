@@ -8,7 +8,7 @@ import './bootstrap';
 import { createApp } from 'vue';
 import Vuetify from './vuetify';
 import router from './router';
-import vuex from './store';
+import vuex from './store/store';
 import moment from 'moment';
 
 /**
@@ -48,5 +48,7 @@ app.config.globalProperties.$filters = {
  * an "id" attribute of "app". This element is included with the "auth"
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
+
+import './interceptor';
 
 app.mount('#app');

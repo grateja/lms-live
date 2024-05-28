@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AccountsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,6 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::post('/auth/login', [AuthController::class, 'login']);
-
-
 Route::get('{any?}', function () {
     return view('welcome');
 })->where('any', '.*');
